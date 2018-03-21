@@ -9,6 +9,14 @@ GAME RULES:
 
 */
 
+/* 
+1. A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn (Hint: always save previous dice roll in a separate variable)
+
+2. Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in JavaScript)
+
+3. Add another dice to the game, so that there are two dices in the game now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one)
+*/
+
 let scores, 
 roundScore, 
 activePlayer, 
@@ -16,7 +24,8 @@ diceDOM, previousLeftDOM, previousRightDOM,
 gameState, 
 previousDice,
 winOptions, win,
-oneOrTwo, dices;
+oneOrTwo, dices,
+versusOptions, gameStyle;
 
 let game = document.getElementById('initialization');
 let radio = document.forms[0];
@@ -51,10 +60,21 @@ function setNumberOfDices() {
     return dices;
 }
 
+function setGameStyle() {
+    versusOptions = document.getElementsByName('versus');
+    for (let i = 0; i < versusOptions.length; i++) {
+        if(versusOptions[i].checked) {
+            gameStyle = versusOptions[i].value;
+        }
+    }
+    return gameStyle;
+}
+
 start.addEventListener('click', (e) => {
     e.preventDefault();
     setWinningScore();
     setNumberOfDices();
+    setGameStyle();
     initialize();
 });
 
@@ -84,6 +104,11 @@ function initialize() {
     diceTwo.style.display = 'none';
     previousLeftDOM.style.display = 'none';
     previousRightDOM.style.display = 'none';
+
+    if(dices === 2) {
+        document.getElementById('p-left').style.display = 'none';
+        document.getElementById('p-right').style.display = 'none';
+    }
 
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
@@ -139,7 +164,11 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
                 //next player's turn
                 dice = 0;
                 document.querySelector('.bad-roll').textContent = 'You rolled 1';
-                nextPlayer();
+                if(gameStyle === 'PvP') {
+                    nextPlayer();
+                } else {
+                    nextPlayer();
+                }
             }
 
             //new rule for two 6s in a row
@@ -237,34 +266,6 @@ function nextPlayer() {
 document.querySelector('.btn-new').addEventListener('click', () => {
     preInitialize();
 });
-
-
-
-
-
-
-/*
-1. A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn (Hint: always save previous dice roll in a separate variable)
-
-2. Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in JavaScript)
-
-3. Add another dice to the game, so that there are two dices in the game now. The player looses, his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one)
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

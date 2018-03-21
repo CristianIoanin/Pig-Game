@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+        <link type="text/css" rel="stylesheet" href="style.css">
+        
+        <title>Pig Game</title>
+    </head>
+
+    <body>
+        <div class="wrapper-initialization" id="pre-initialization">
+            <form>
+                <h3>Preferences</h3>
+                <h4>One or Two</h4>
+                <div class="how-many-dices">
+                    <label for="one">
+                    <input type="radio" id="one" name="one-or-two" value="1" checked><span>1 Dice</span></label>
+                    <label for="two">
+                    <input type="radio" id="two" name="one-or-two" value="2"><span>2 Dices</span></label>
+                </div>
+                <h4>Winning score</h4>
+                <div class="winning-score">
+                    <label for="twenty">
+                    <input type="radio" id="twenty" name="win-at" value="20"><span>20</span></label>
+                    <label for="sixty">
+                    <input type="radio" id="sixty" name="win-at" value="60" checked><span>60</span></label>
+                    <label for="hundred">
+                    <input type="radio" id="hundred" name="win-at" value="100"><span>100</span></label>
+                </div>
+                <h4>Versus</h4>
+                <div class="versus-select">
+                    <label for="PvP">
+                    <input type="radio" id="PvP" name="versus" value="PvP" checked><span>Player VS Player</span></label>
+                    <label for="PvCPU">
+                    <input type="radio" id="PvCPU" name="versus" value="PvCPU"><span>Player VS Computer</span></label>
+                </div>
+                <div>
+                <button id="start"><i class="ion-ios-plus-outline"></i>Start Game</button>
+                </div>
+            </form>
+        </div>
+        <div class="wrapper clearfix" id='initialization'>
+            <div class="player-0-panel active">
+                <div>
+                    <p id="p-left">Previous roll</p>
+                    <img src="dice-5.png" alt="Previous Dice" class="previous-0" id="p-left">
+                </div>
+                
+                <div class="player-name" id="name-0">Player 1</div>
+                <div class="player-score" id="score-0">43</div>
+                <div class="player-current-box">
+                    <div class="player-current-label">Current</div>
+                    <div class="player-current-score" id="current-0">11</div>
+                </div>
+            </div>
+            
+            <div class="player-1-panel">
+                <div>
+                    <p id="p-right">Previous roll</p>
+                    <img src="dice-5.png" alt="Previous Dice" class="previous-1" id="p-right">
+                </div>
+                <div class="player-name" id="name-1">Player 2</div>
+                <div class="player-score" id="score-1">72</div>
+                <div class="player-current-box">
+                    <div class="player-current-label">Current</div>
+                    <div class="player-current-score" id="current-1">0</div>
+                </div>
+            </div>
+            
+            <button class="btn-new"><i class="ion-ios-plus-outline"></i>New game</button>
+            <div class="settings" id="winning-at"></div>
+            <div class="bad-roll"></div>
+            <button class="btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
+            <button class="btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
+            
+            <img src="dice-5.png" alt="Dice" class="dice">
+            <img src="dice-5.png" alt="Dice One" class="dices" id="dices-0">
+            <img src="dice-5.png" alt="Dice Two" class="dices" id="dices-1">
+        </div>
+        
+        <script src="app.js"></script>
+    </body>
+</html>

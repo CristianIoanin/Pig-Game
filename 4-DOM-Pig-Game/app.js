@@ -120,6 +120,7 @@ function initialize() {
     document.querySelector('.player-1-panel').classList.remove('active');
     
     document.querySelector('.player-0-panel').classList.add('active');
+    addEventListeners();
 }
 
 // initialize();
@@ -133,8 +134,6 @@ function removeEventListeners() {
     document.querySelector('.btn-roll').removeEventListener('click', gameplayRoll);
     document.querySelector('.btn-hold').removeEventListener('click', gameplayHold); 
 }
-
-addEventListeners();
 
 function gameplayRoll() {
     if(gameState) {
@@ -264,6 +263,7 @@ function gameplayHold() {
 
 
 function nextPlayer() {
+    clearDices();
     activePlayer = (activePlayer === 0) ? 1 : 0;
     roundScore = 0;
     previousDice = 0;
@@ -273,8 +273,6 @@ function nextPlayer() {
 
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
-
-    clearDices();
 }
 
 function clearDices() {
@@ -308,21 +306,21 @@ const computerPlay = {
         if (dice !== 1) {
             //add to score
             roundScore += dice;
-            document.querySelector('#current-' + activePlayer).textContent = roundScore;
+            document.querySelector('#current-1').textContent = roundScore;
         } else if (dice === 6 && previousDice === 6) {
             //new rule for two 6s in a row
             scores[activePlayer] = 0;
             dice = 0;
-            document.querySelector('#score-' + activePlayer).textContent = '0';
+            document.querySelector('#score-1').textContent = '0';
             document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
-            addEventListeners();
             nextPlayer();
+            addEventListeners();
         } else {
             //next player's turn
             dice = 0;
             document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
-            addEventListeners();
             nextPlayer();
+            addEventListeners();
         }
 
         previousDice = dice;
@@ -331,15 +329,16 @@ const computerPlay = {
     hold: function() {
         if(gameState && roundScore !== 0) {
             //add current score to global score
-            scores[activePlayer] += roundScore;
+            scores[1] += roundScore;
     
             //update UI 
-            document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+            document.querySelector('#score-1').textContent = scores[activePlayer];
     
             //check if player won the game
-            if(scores[activePlayer] >= win) {
-                roundScore = 0;
+            if(scores[1] >= win) {
                 clearDices();
+                roundScore = 0;
+
                 document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
                 document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
                 document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
@@ -348,8 +347,8 @@ const computerPlay = {
                 document.querySelector('.btn-new').style.display = 'block';
             } else {
                 //next player
-                addEventListeners();
                 nextPlayer();
+                addEventListeners();
             }
         }
     }

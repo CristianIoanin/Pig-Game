@@ -132,7 +132,7 @@ input {
     margin-bottom: 130px;
 }
 
-.active { background-color: #f7f7f7; }
+.active { background-color: #f5f5f5; }
 .active .player-name { font-weight: 300; }
 
 .active .player-name::after {
@@ -142,7 +142,6 @@ input {
     color: #EB4D4D;
     top: -7px;
     right: 10px;
-    
 }
 
 .player-current-box {
@@ -206,13 +205,13 @@ i {
     left: 50%;
     transform: translateX(-50%);
     top: 339px;
-    background-color: #f7f7f7; 
+    background: none; 
     color: #EB4D4D;
     font-family: Lato;
     font-size: 20px;
     text-transform: uppercase;
     text-align: center;
-    font-weight: 300; 
+    font-weight: 600; 
 }
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
@@ -223,7 +222,7 @@ i {
     top: 178px;
     transform: translateX(-50%);
     height: 100px;
-    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.2);
 }
 
 .dices {
@@ -231,7 +230,7 @@ i {
     left: 50%;
     transform: translateX(-50%);
     height: 100px;
-    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.2);
 }
 
 #dices-0 { top: 150px; }
@@ -281,7 +280,7 @@ p {
     left: 50%;
     transform: translateX(-50%);
     top: 45px;
-    background-color: #f7f7f7; 
+    background: none; 
     color: #EB4D4D;
     font-family: Lato;
     font-size: 20px;
@@ -289,5 +288,5 @@ p {
     font-weight: 600; 
 }
 
-.winner { background-color: #f7f7f7; }
+.winner { background-color: #f5f5f5; }
 .winner .player-name { font-weight: 300; color: #EB4D4D; }

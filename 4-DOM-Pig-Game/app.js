@@ -313,12 +313,14 @@ const computerPlay = {
             dice = 0;
             document.querySelector('#score-1').textContent = '0';
             document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
+
             nextPlayer();
             addEventListeners();
         } else {
             //next player's turn
             dice = 0;
             document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
+
             nextPlayer();
             addEventListeners();
         }
@@ -376,6 +378,10 @@ const randomComputerPlay = {
                 this.time += 1000;
                 setTimeout( () => computerPlay.hold(), this.time);
             }
+        }  else {
+            //next player
+            nextPlayer();
+            addEventListeners();
         }
         this.time = 1000;
     }

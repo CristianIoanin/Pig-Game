@@ -173,6 +173,7 @@ function gameplayRoll() {
                     nextPlayer();
                 } else {
                     removeEventListeners();
+                    randomComputerPlay.computerON = true;
                     nextPlayer();
                     // computerPlay.roll();
                     randomComputerPlay.firstRoll();
@@ -186,6 +187,7 @@ function gameplayRoll() {
                     nextPlayer();
                 } else {
                     removeEventListeners();
+                    randomComputerPlay.computerON = true;
                     nextPlayer();
                     // computerPlay.roll();
                     randomComputerPlay.firstRoll();
@@ -252,6 +254,7 @@ function gameplayHold() {
                 nextPlayer();
             } else {
                 removeEventListeners();
+                randomComputerPlay.computerON = true;
                 nextPlayer();
                 // computerPlay.roll();
                 randomComputerPlay.firstRoll();
@@ -265,6 +268,7 @@ function gameplayHold() {
 function nextPlayer() {
     clearDices();
     activePlayer = (activePlayer === 0) ? 1 : 0;
+
     roundScore = 0;
     previousDice = 0;
 
@@ -314,17 +318,23 @@ const computerPlay = {
             document.querySelector('#score-1').textContent = '0';
             document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
 
+            randomComputerPlay.computerON = false;
             nextPlayer();
             addEventListeners();
+            console.log('computer hit double 6');
         } else {
             //next player's turn
             dice = 0;
             document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
 
+            randomComputerPlay.computerON = false;
             nextPlayer();
             addEventListeners();
+            console.log('computer hit 1');
         }
-
+        console.log('dice: ' + dice);
+        console.log('previousDice: ' + previousDice);
+        console.log(activePlayer);
         previousDice = dice;
     },
 
@@ -349,6 +359,7 @@ const computerPlay = {
                 document.querySelector('.btn-new').style.display = 'block';
             } else {
                 //next player
+                randomComputerPlay.computerON = false;
                 nextPlayer();
                 addEventListeners();
             }
@@ -364,25 +375,23 @@ function flipCoin() {
 
 const randomComputerPlay = {
     time: 1000,
+    computerON: false,
     firstRoll: function() {
         setTimeout( () => computerPlay.roll(), this.time);
     },
     makeProgress: function() {
-        if (activePlayer === 1) {
+        if (this.computerON) {
             let chance = flipCoin();
             if(chance) {
                 this.time += 1000;
                 setTimeout( () => computerPlay.roll(), this.time);
-                this.makeProgress();
+                if(this.computerON) this.makeProgress();
             } else {
                 this.time += 1000;
                 setTimeout( () => computerPlay.hold(), this.time);
             }
-        }  else {
-            //next player
-            nextPlayer();
-            addEventListeners();
         }
+        this.computerON = false;
         this.time = 1000;
     }
 };

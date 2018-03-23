@@ -173,7 +173,6 @@ function gameplayRoll() {
                     nextPlayer();
                 } else {
                     removeEventListeners();
-                    randomComputerPlay.computerON = true;
                     nextPlayer();
                     // computerPlay.roll();
                     randomComputerPlay.firstRoll();
@@ -187,7 +186,6 @@ function gameplayRoll() {
                     nextPlayer();
                 } else {
                     removeEventListeners();
-                    randomComputerPlay.computerON = true;
                     nextPlayer();
                     // computerPlay.roll();
                     randomComputerPlay.firstRoll();
@@ -229,6 +227,7 @@ function gameplayRoll() {
             }
         }
     }
+    return activePlayer;
 }
 
 function gameplayHold() {
@@ -254,7 +253,6 @@ function gameplayHold() {
                 nextPlayer();
             } else {
                 removeEventListeners();
-                randomComputerPlay.computerON = true;
                 nextPlayer();
                 // computerPlay.roll();
                 randomComputerPlay.firstRoll();
@@ -262,6 +260,7 @@ function gameplayHold() {
             }
         }
     }
+    return activePlayer;
 }
 
 
@@ -313,12 +312,11 @@ const computerPlay = {
             document.querySelector('#current-1').textContent = roundScore;
         } else if (dice === 6 && previousDice === 6) {
             //new rule for two 6s in a row
-            scores[activePlayer] = 0;
+            scores[1] = 0;
             dice = 0;
             document.querySelector('#score-1').textContent = '0';
             document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
 
-            randomComputerPlay.computerON = false;
             nextPlayer();
             addEventListeners();
             console.log('computer hit double 6');
@@ -327,7 +325,6 @@ const computerPlay = {
             dice = 0;
             document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
 
-            randomComputerPlay.computerON = false;
             nextPlayer();
             addEventListeners();
             console.log('computer hit 1');
@@ -336,6 +333,7 @@ const computerPlay = {
         console.log('previousDice: ' + previousDice);
         console.log(activePlayer);
         previousDice = dice;
+        return activePlayer;
     },
 
     hold: function() {
@@ -359,11 +357,11 @@ const computerPlay = {
                 document.querySelector('.btn-new').style.display = 'block';
             } else {
                 //next player
-                randomComputerPlay.computerON = false;
                 nextPlayer();
                 addEventListeners();
             }
         }
+        return activePlayer;
     }
 };
 
@@ -375,23 +373,21 @@ function flipCoin() {
 
 const randomComputerPlay = {
     time: 1000,
-    computerON: false,
     firstRoll: function() {
         setTimeout( () => computerPlay.roll(), this.time);
     },
     makeProgress: function() {
-        if (this.computerON) {
+        if (activePlayer) {
             let chance = flipCoin();
             if(chance) {
                 this.time += 1000;
                 setTimeout( () => computerPlay.roll(), this.time);
-                if(this.computerON) this.makeProgress();
+                this.makeProgress();
             } else {
                 this.time += 1000;
                 setTimeout( () => computerPlay.hold(), this.time);
             }
         }
-        this.computerON = false;
         this.time = 1000;
     }
 };

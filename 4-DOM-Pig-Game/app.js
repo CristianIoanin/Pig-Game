@@ -21,7 +21,7 @@ let scores,
 roundScore, 
 activePlayer, 
 diceDOM, previousLeftDOM, previousRightDOM,
-gameState, 
+gameState,
 previousDice,
 winOptions, win,
 oneOrTwo, dices,
@@ -159,7 +159,7 @@ function gameplayRoll() {
             }
 
             //update roundScore IF rolled number is NOT a 1
-            if (dice !== 1) {
+            if (dice !== 1 && !(dice === 6 && previousDice === 6)) {
                 //add to score
                 roundScore += dice;
                 document.querySelector('#current-' + activePlayer).textContent = roundScore;
@@ -215,7 +215,15 @@ function gameplayRoll() {
             } else {
                 //next player's turn
                 document.querySelector('.bad-roll').textContent = 'You rolled 1';
-                nextPlayer();
+                if(gameStyle === 'PvP') {
+                    nextPlayer();
+                } else {
+                    removeEventListeners();
+                    nextPlayer();
+                    // computerPlay.roll();
+                    randomComputerPlay.firstRoll();
+                    randomComputerPlay.makeProgress(activePlayer);
+                }
             }
 
             //new rule for two 6s
@@ -223,7 +231,15 @@ function gameplayRoll() {
                 scores[activePlayer] = 0;
                 document.querySelector('#score-' + activePlayer).textContent = '0';
                 document.querySelector('.bad-roll').textContent = 'You rolled double 6';
-                nextPlayer();
+                if(gameStyle === 'PvP') {
+                    nextPlayer();
+                } else {
+                    removeEventListeners();
+                    nextPlayer();
+                    // computerPlay.roll();
+                    randomComputerPlay.firstRoll();
+                    randomComputerPlay.makeProgress(activePlayer);
+                }
             }
         }
     }
@@ -294,48 +310,81 @@ const computerPlay = {
     roll: function(player) {
         if(player) {
             document.querySelector('.bad-roll').textContent = '';
+/////////////////////////////////////////////////////////////////////////////////
+//ONE-DICE GAME - Computer's turn
+            if(dices === 1) {
+                let dice = Math.floor(Math.random() * 6) + 1; 
 
-            let dice = Math.floor(Math.random() * 6) + 1; 
+                //display the result
+                diceDOM.style.display = 'block';
+                diceDOM.src = 'dice-' + dice + '.png';
 
-            //display the result
-            diceDOM.style.display = 'block';
-            diceDOM.src = 'dice-' + dice + '.png';
+                if(previousDice) {
+                    previousRightDOM.style.display = 'block';
+                    previousRightDOM.src = 'dice-' + previousDice + '.png';
+                }
 
-            if(previousDice) {
-                previousRightDOM.style.display = 'block';
-                previousRightDOM.src = 'dice-' + previousDice + '.png';
-            }
+                //update roundScore IF rolled number is NOT a 1
+                if (dice !== 1 && !(dice === 6 && previousDice === 6)) {
+                    //add to score
+                    roundScore += dice;
+                    document.querySelector('#current-1').textContent = roundScore;
+                } else if (dice === 6 && previousDice === 6) {
+                    //new rule for two 6s in a row
+                    scores[1] = 0;
+                    dice = 0;
+                    document.querySelector('#score-1').textContent = '0';
+                    document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
 
-            //update roundScore IF rolled number is NOT a 1
-            if (dice !== 1) {
-                //add to score
-                roundScore += dice;
-                document.querySelector('#current-1').textContent = roundScore;
-            } else if (dice === 6 && previousDice === 6) {
-                //new rule for two 6s in a row
-                scores[1] = 0;
-                dice = 0;
-                document.querySelector('#score-1').textContent = '0';
-                document.querySelector('.bad-roll').textContent = 'Computer rolled 6 in a row';
+                    nextPlayer();
+                    addEventListeners();
+                    console.log('computer hit double 6');
+                } else {
+                    //next player's turn
+                    dice = 0;
+                    document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
 
-                nextPlayer();
-                addEventListeners();
-                console.log('computer hit double 6');
-            } else {
-                //next player's turn
-                dice = 0;
-                document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
-
-                nextPlayer();
-                addEventListeners();
-                console.log('computer hit 1');
-            }
-            console.log('dice: ' + dice);
-            console.log('previousDice: ' + previousDice);
-            console.log(activePlayer);
-            previousDice = dice;
-            return activePlayer;
-        } else return false;
+                    nextPlayer();
+                    addEventListeners();
+                    console.log('computer hit 1');
+                }
+                console.log('dice: ' + dice);
+                console.log('previousDice: ' + previousDice);
+                console.log(activePlayer);
+                previousDice = dice;
+                return activePlayer;
+            } else if (dices === 2) {
+                let rollOne = Math.floor(Math.random() * 6) + 1;
+                let rollTwo = Math.floor(Math.random() * 6) + 1; 
+                
+                diceOne.style.display = 'block';
+                diceTwo.style.display = 'block';
+    
+                diceOne.src = 'dice-' + rollOne + '.png';
+                diceTwo.src = 'dice-' + rollTwo + '.png';
+    
+                if (rollOne !== 1 && rollTwo !== 1) {
+                    //add to score
+                    roundScore += (rollOne + rollTwo);
+                    document.querySelector('#current-1').textContent = roundScore;
+                } else {
+                    //next player's turn
+                    document.querySelector('.bad-roll').textContent = 'Computer rolled 1';
+                    nextPlayer();
+                    addEventListeners();
+                }
+    
+                //new rule for two 6s
+                if (rollOne === 6 && rollTwo === 6) {
+                    scores[1] = 0;
+                    document.querySelector('#score-1').textContent = '0';
+                    document.querySelector('.bad-roll').textContent = 'Computer rolled double 6';
+                    nextPlayer();
+                    addEventListeners();
+                }
+                return activePlayer;
+            } else return false; 
+        }
     },
 
     hold: function() {

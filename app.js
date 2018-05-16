@@ -11,15 +11,15 @@ GAME RULES:
 
 */
 
-let scores, 
-roundScore, 
-activePlayer, 
-diceDOM, previousLeftDOM, previousRightDOM,
-gameState,
-previousDice,
-winOptions, win,
-oneOrTwo, dices,
-versusOptions, gameStyle;
+let scores,
+    roundScore,
+    activePlayer,
+    diceDOM, previousLeftDOM, previousRightDOM,
+    gameState,
+    previousDice,
+    winOptions, win,
+    oneOrTwo, dices,
+    versusOptions, gameStyle;
 
 const game = document.getElementById('initialization');
 const preInitialization = document.getElementById('pre-initialization');
@@ -36,7 +36,7 @@ preInitialize();
 function setWinningScore() {
     winOptions = document.getElementsByName('win-at');
     for (let i = 0; i < winOptions.length; i++) {
-        if(winOptions[i].checked) {
+        if (winOptions[i].checked) {
             win = Number(winOptions[i].value);
         }
     }
@@ -46,7 +46,7 @@ function setWinningScore() {
 function setNumberOfDices() {
     oneOrTwo = document.getElementsByName('one-or-two');
     for (let i = 0; i < oneOrTwo.length; i++) {
-        if(oneOrTwo[i].checked) {
+        if (oneOrTwo[i].checked) {
             dices = Number(oneOrTwo[i].value);
         }
     }
@@ -56,7 +56,7 @@ function setNumberOfDices() {
 function setGameStyle() {
     versusOptions = document.getElementsByName('versus');
     for (let i = 0; i < versusOptions.length; i++) {
-        if(versusOptions[i].checked) {
+        if (versusOptions[i].checked) {
             gameStyle = versusOptions[i].value;
         }
     }
@@ -83,7 +83,7 @@ function initialize() {
     activePlayer = 0;
     roundScore = 0;
     previousDice = 0;
-    
+
     //define essential elements of the visual gameplay: dices
     diceDOM = document.querySelector('.dice');
     diceOne = document.querySelector('#dices-0');
@@ -97,7 +97,7 @@ function initialize() {
     //hide dices in the initial phase
     clearDices();
 
-    if(dices === 2) { //hide text refference to the previous dice
+    if (dices === 2) { //hide text refference to the previous dice
         document.getElementById('p-left').style.display = 'none';
         document.getElementById('p-right').style.display = 'none';
     }
@@ -108,16 +108,16 @@ function initialize() {
 
     document.getElementById('current-0').textContent = '0';
     document.getElementById('current-1').textContent = '0';
-    
+
     document.getElementById('name-0').textContent = (gameStyle === 'PvP') ? 'Player 1' : 'Player';
     document.getElementById('name-1').textContent = (gameStyle === 'PvP') ? 'Player 2' : 'Computer';
-    
+
     document.querySelector('.player-0-panel').classList.remove('winner');
     document.querySelector('.player-1-panel').classList.remove('winner');
-    
+
     document.querySelector('.player-0-panel').classList.remove('active');
     document.querySelector('.player-1-panel').classList.remove('active');
-    
+
     document.querySelector('.player-0-panel').classList.add('active');
 
     //fn to add event listeners for roll and hold buttons
@@ -126,12 +126,12 @@ function initialize() {
 
 function addEventListeners() {
     document.querySelector('.btn-roll').addEventListener('click', gameplayRoll);
-    document.querySelector('.btn-hold').addEventListener('click', gameplayHold); 
+    document.querySelector('.btn-hold').addEventListener('click', gameplayHold);
 }
 
 function removeEventListeners() {
     document.querySelector('.btn-roll').removeEventListener('click', gameplayRoll);
-    document.querySelector('.btn-hold').removeEventListener('click', gameplayHold); 
+    document.querySelector('.btn-hold').removeEventListener('click', gameplayHold);
 }
 
 function clearDices() {
@@ -150,19 +150,19 @@ document.querySelector('.btn-new').addEventListener('click', () => {
 // *** THE GAME ***
 //fn for rolling-the-dice action
 function gameplayRoll() {
-    if(gameState) {
+    if (gameState) {
         document.querySelector('.bad-roll').textContent = '';
         //ONE-DICE GAME
-        if(dices === 1) {
+        if (dices === 1) {
             //generate random number to replicate a dice roll
-            let dice = Math.floor(Math.random() * 6) + 1; 
+            let dice = Math.floor(Math.random() * 6) + 1;
 
             //display the result
             diceDOM.style.display = 'block';
             diceDOM.src = 'dice-' + dice + '.png';
 
             //display previous dice to add visual complexity and make it easier to visually refer to rolling 6 in a row
-            if(previousDice) {
+            if (previousDice) {
                 if (activePlayer === 0) {
                     previousLeftDOM.style.display = 'block';
                     previousLeftDOM.src = 'dice-' + previousDice + '.png';
@@ -189,11 +189,11 @@ function gameplayRoll() {
             }
             //save rolled dice to previous dice
             previousDice = dice;
-        } else if(dices === 2) {
+        } else if (dices === 2) {
             //TWO-DICE GAME
             let rollOne = Math.floor(Math.random() * 6) + 1;
-            let rollTwo = Math.floor(Math.random() * 6) + 1; 
-            
+            let rollTwo = Math.floor(Math.random() * 6) + 1;
+
             //define visuals for the dices
             diceOne.style.display = 'block';
             diceTwo.style.display = 'block';
@@ -219,7 +219,7 @@ function gameplayRoll() {
 }
 
 function gameplayHold() {
-    if(gameState && roundScore !== 0) {
+    if (gameState && roundScore !== 0) {
         //add current score to GLOBAL score
         scores[activePlayer] += roundScore;
 
@@ -227,7 +227,7 @@ function gameplayHold() {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         //check if player won the game
-        if(scores[activePlayer] >= win) {
+        if (scores[activePlayer] >= win) {
             roundScore = 0;
             clearDices();
             displayWinner();
@@ -271,18 +271,18 @@ function computerPhase() {
 }
 
 const computerPlay = {
-    roll: function(player) {
-        if(player) {
+    roll: function (player) {
+        if (player) {
             document.querySelector('.bad-roll').textContent = '';
             //ONE-DICE GAME - Computer's turn
-            if(dices === 1) {
-                let dice = Math.floor(Math.random() * 6) + 1; 
+            if (dices === 1) {
+                let dice = Math.floor(Math.random() * 6) + 1;
 
                 //display the result
                 diceDOM.style.display = 'block';
                 diceDOM.src = 'dice-' + dice + '.png';
 
-                if(previousDice) {
+                if (previousDice) {
                     previousRightDOM.style.display = 'block';
                     previousRightDOM.src = 'dice-' + previousDice + '.png';
                 }
@@ -308,16 +308,16 @@ const computerPlay = {
                 return activePlayer;
             } else if (dices === 2) {
                 let rollOne = Math.floor(Math.random() * 6) + 1;
-                let rollTwo = Math.floor(Math.random() * 6) + 1; 
-                
+                let rollTwo = Math.floor(Math.random() * 6) + 1;
+
                 diceOne.style.display = 'block';
                 diceTwo.style.display = 'block';
-    
+
                 diceOne.src = 'dice-' + rollOne + '.png';
                 diceTwo.src = 'dice-' + rollTwo + '.png';
 
                 //condition checks for ROUND score updating
-                if (rollOne !== 1 && rollTwo !== 1) {
+                if (rollOne !== 1 && rollTwo !== 1 && !(rollOne === 6 && rollTwo === 6)) {
                     roundScore += (rollOne + rollTwo);
                     document.querySelector('#current-1').textContent = roundScore;
                 } else if (rollOne === 6 && rollTwo === 6) {
@@ -336,16 +336,16 @@ const computerPlay = {
         }
     },
 
-    hold: function() {
-        if(gameState && roundScore !== 0) {
+    hold: function () {
+        if (gameState && roundScore !== 0) {
             //add current score to GLOBAL score
             scores[activePlayer] += roundScore;
-    
+
             //update UI 
             document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-    
+
             //check if player won the game
-            if(scores[activePlayer] >= win) {
+            if (scores[activePlayer] >= win) {
                 roundScore = 0;
                 clearDices();
                 displayWinner();
@@ -368,20 +368,20 @@ function flipCoin() {
 //let Computer play based on flipCoin() and set a timed sequence to display its progress
 const randomComputerPlay = {
     time: 1000,
-    firstRoll: function() {
-        setTimeout( () => computerPlay.roll(activePlayer), this.time);
+    firstRoll: function () {
+        setTimeout(() => computerPlay.roll(activePlayer), this.time);
     },
-    makeProgress: function(player) {
+    makeProgress: function (player) {
         if (player) {
             let chance = flipCoin();
-            if(chance) {
+            if (chance) {
                 this.time += 1000;
-                setTimeout( () => {
+                setTimeout(() => {
                     return this.makeProgress(computerPlay.roll(activePlayer));
-                 }, this.time);
+                }, this.time);
             } else {
                 this.time += 1000;
-                setTimeout( () => computerPlay.hold(), this.time);
+                setTimeout(() => computerPlay.hold(), this.time);
             }
         } else return false;
         this.time = 1000;
